@@ -9,6 +9,9 @@ Converts Mermaid diagram definitions into SVG, PNG, and PDF files using a headle
 - [How it Works](#how-it-works)
 - [Requirements](#requirements)
 - [Installation](#installation)
+  - [Quick Install](#quick-install)
+  - [Go Install](#go-install)
+  - [Manual Download](#manual-download)
   - [From Source](#from-source)
   - [Cross-Compilation](#cross-compilation)
   - [Docker](#docker)
@@ -43,14 +46,29 @@ Converts Mermaid diagram definitions into SVG, PNG, and PDF files using a headle
 
 ## Installation
 
+### Quick Install
+
+Detects your OS/architecture, ensures Chrome/Chromium is available, and installs the latest pre-built binary:
+
+```sh
+curl -sSL https://raw.githubusercontent.com/coolamit/mermaid-cli/main/install.sh | sh
+```
+
+### Go Install
+
+```sh
+go install github.com/coolamit/mermaid-cli/cmd/mmd-cli@latest
+```
+
+### Manual Download
+
+Download the archive for your platform from [GitHub Releases](https://github.com/coolamit/mermaid-cli/releases), extract it, and move the `mmd-cli` binary to a directory in your PATH.
+
 ### From Source
 
 ```bash
 # Build from source
 make build
-
-# Or install directly
-go install github.com/coolamit/mermaid-cli/cmd/mmd-cli@latest
 ```
 
 ### Cross-Compilation
