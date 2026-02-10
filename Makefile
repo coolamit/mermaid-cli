@@ -1,11 +1,12 @@
 # Go build configuration
 BINARY_NAME=mmd-cli
 GO=/usr/local/go/bin/go
+GOFMT=/usr/local/go/bin/gofmt
 VERSION?=$(shell cat version)
 LDFLAGS=-ldflags '-s -w -X github.com/coolamit/mermaid-cli/internal/cli.Version=$(VERSION)'
 
 # Declare phony targets
-.PHONY: ssh-cmd up down build clean test tidy build-linux-x64 build-linux-arm64 build-macos-x64 build-macos-arm64 build-all docker-up docker-down docker-run docker-run-aloof docker-clean
+.PHONY: ssh-cmd up down build clean test tidy format build-linux-x64 build-linux-arm64 build-macos-x64 build-macos-arm64 build-all docker-up docker-down docker-run docker-run-aloof docker-clean
 
 # Common function definitions
 define CURRENT_HOMESTEAD_STATUS
@@ -63,6 +64,9 @@ test:
 
 tidy:
 	@$(call SSH_EXEC,$(GO) mod tidy)
+
+format:
+	@$(call SSH_EXEC,$(GOFMT) -w .)
 
 clean:
 	@$(call SSH_EXEC,rm -f $(BINARY_NAME))
