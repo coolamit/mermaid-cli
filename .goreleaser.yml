@@ -13,7 +13,8 @@ builds:
       - arm64
 
 archives:
-  - format: tar.gz
+  - formats:
+      - tar.gz
     name_template: "mmd-cli_{{.Version}}_{{ if eq .Os \"darwin\" }}macos{{ else }}{{ .Os }}{{ end }}_{{ if eq .Arch \"amd64\" }}x64{{ else }}{{ .Arch }}{{ end }}"
 
 checksum:

@@ -1,4 +1,4 @@
-mmd-cli
+/mmd-cli
 /bin/
 /dist/
 *.test
