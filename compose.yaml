@@ -1,0 +1,8 @@
+services:
+  mmd-cli:
+    build: .
+    image: mmd-cli
+    working_dir: /data
+    volumes:
+      - .:/data
+    entrypoint: ["sleep", "infinity"]

@@ -1,0 +1,12 @@
+.git
+.idea
+.vscode
+.claude
+.DS_Store
+_docs
+mmd-cli
+mmd-cli-*
+*.svg
+*.png
+*.pdf
+compose.yaml

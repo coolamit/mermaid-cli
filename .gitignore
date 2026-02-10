@@ -1,0 +1,17 @@
+mmd-cli
+/bin/
+/dist/
+*.test
+coverage.out
+coverage.html
+go.work
+go.work.sum
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.svg
+*.png
+*.pdf
+!web/*.js
+_docs
