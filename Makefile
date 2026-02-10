@@ -59,7 +59,7 @@ build:
 	@echo "Built $(BINARY_NAME)"
 
 test:
-	@$(call SSH_EXEC,$(GO) test ./...)
+	@$(call SSH_EXEC,$(GO) clean -testcache && $(GO) test ./...)
 
 tidy:
 	@$(call SSH_EXEC,$(GO) mod tidy)
