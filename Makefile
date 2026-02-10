@@ -1,7 +1,7 @@
 # Go build configuration
 BINARY_NAME=mmd-cli
 GO=/usr/local/go/bin/go
-VERSION?=dev
+VERSION?=$(shell cat version)
 LDFLAGS=-ldflags '-s -w -X github.com/coolamit/mermaid-cli/internal/cli.Version=$(VERSION)'
 
 # Declare phony targets
