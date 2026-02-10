@@ -1,8 +1,10 @@
-# mmd-cli
+# Mermaid CLI
 
 A drop-in replacement for `@mermaid-js/mermaid-cli` written in Go. Produces a single static binary with no Node.js dependency. Requires Chrome or Chromium at runtime.
 
 Converts Mermaid diagram definitions into SVG, PNG, and PDF files using a headless Chrome browser.
+
+---
 
 ## Table of Contents
 
@@ -51,7 +53,7 @@ Converts Mermaid diagram definitions into SVG, PNG, and PDF files using a headle
 Detects your OS/architecture, ensures Chrome/Chromium is available, and installs the latest pre-built binary:
 
 ```sh
-curl -sSL https://raw.githubusercontent.com/coolamit/mermaid-cli/main/install.sh | sh
+curl -sSL https://raw.githubusercontent.com/coolamit/mermaid-cli/main/install.sh | bash
 ```
 
 ### Go Install
