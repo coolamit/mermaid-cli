@@ -4,19 +4,19 @@ import (
 	"context"
 	"sync"
 
-	"github.com/coolamit/mermaid-cli/internal/config"
 	"github.com/chromedp/chromedp"
+	"github.com/coolamit/mermaid-cli/internal/config"
 )
 
 // Browser manages a lazy-started headless Chrome instance that is reused across renders.
 type Browser struct {
-	mu         sync.Mutex
-	allocCtx   context.Context
-	allocCancel context.CancelFunc
-	browserCtx context.Context
+	mu            sync.Mutex
+	allocCtx      context.Context
+	allocCancel   context.CancelFunc
+	browserCtx    context.Context
 	browserCancel context.CancelFunc
-	started    bool
-	cfg        *config.BrowserConfig
+	started       bool
+	cfg           *config.BrowserConfig
 }
 
 // NewBrowser creates a new Browser manager with the given config.

@@ -66,7 +66,7 @@ tidy:
 	@$(call SSH_EXEC,$(GO) mod tidy)
 
 format:
-	@$(call SSH_EXEC,$(GOFMT) -w .)
+	@$(call SSH_EXEC,$(GOFMT) -l -w .)
 
 clean:
 	@$(call SSH_EXEC,rm -f $(BINARY_NAME))

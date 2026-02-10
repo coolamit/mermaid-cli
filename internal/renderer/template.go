@@ -131,4 +131,3 @@ func BuildPageHTML(definition string, opts RenderOpts) (string, error) {
 
 	return sb.String(), nil
 }
-
