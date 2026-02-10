@@ -35,6 +35,16 @@ detect_platform() {
   info "Detected platform: ${OS}/${ARCH}"
 }
 
+# ── Check installed version ──────────────────────────────────────────────────
+
+check_installed_version() {
+  if command -v "$BINARY" >/dev/null 2>&1; then
+    INSTALLED_VERSION=$("$BINARY" --version 2>/dev/null | awk '{print $NF}' || true)
+  else
+    INSTALLED_VERSION=""
+  fi
+}
+
 # ── Chrome / Chromium check & install ────────────────────────────────────────
 
 has_chrome() {
@@ -188,8 +198,19 @@ verify() {
 
 main() {
   detect_platform
+  check_installed_version
   ensure_chrome
   get_version "$1"
+
+  if [ -n "$INSTALLED_VERSION" ] && [ "$INSTALLED_VERSION" = "$VERSION_NUM" ]; then
+    info "${BINARY} ${VERSION_NUM} is already installed and up-to-date."
+    exit 0
+  fi
+
+  if [ -n "$INSTALLED_VERSION" ]; then
+    info "Updating ${BINARY} from ${INSTALLED_VERSION} to ${VERSION_NUM}..."
+  fi
+
   install_binary
   verify
 
