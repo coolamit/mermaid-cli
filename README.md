@@ -11,7 +11,7 @@ Converts Mermaid diagram definitions into SVG, PNG, and PDF files using a headle
 - [How it Works](#how-it-works)
 - [Requirements](#requirements)
 - [Installation](#installation)
-  - [Quick Install](#quick-install)
+  - [Quick Install/Update](#quick-installupdate)
   - [Go Install](#go-install)
   - [Manual Download](#manual-download)
   - [From Source](#from-source)
@@ -28,7 +28,6 @@ Converts Mermaid diagram definitions into SVG, PNG, and PDF files using a headle
   - [Run Commands](#run-commands)
   - [One-off (Ephemeral)](#one-off-ephemeral)
   - [Without Docker Compose](#without-docker-compose)
-- [License](#license)
 
 ## How it Works
 
@@ -48,12 +47,12 @@ Converts Mermaid diagram definitions into SVG, PNG, and PDF files using a headle
 
 ## Installation
 
-### Quick Install
+### Quick Install/Update
 
-Detects your OS/architecture, ensures Chrome/Chromium is available, and installs the latest pre-built binary:
+Detects your OS/architecture, ensures Chrome/Chromium is available, and installs/updates the latest pre-built binary:
 
 ```sh
-curl -sSL https://raw.githubusercontent.com/coolamit/mermaid-cli/main/install.sh | bash
+curl -L https://raw.githubusercontent.com/coolamit/mermaid-cli/master/install.sh | sh
 ```
 
 ### Go Install
@@ -75,12 +74,12 @@ make build
 
 ### Cross-Compilation
 
-| Make target | Platform | Architecture | Output binary |
-|---|---|---|---|
-| `build-linux-x64` | Linux | x64 (Intel/AMD) | `mmd-cli-linux-x64` |
-| `build-linux-arm64` | Linux | ARM64 (Apple Silicon, AWS Graviton) | `mmd-cli-linux-arm64` |
-| `build-macos-x64` | macOS | x64 (Intel Mac) | `mmd-cli-macos-x64` |
-| `build-macos-arm64` | macOS | ARM64 (Apple Silicon) | `mmd-cli-macos-arm64` |
+| Make target         | Platform | Architecture                        | Output binary         |
+|---------------------|----------|-------------------------------------|-----------------------|
+| `build-linux-x64`   | Linux    | x64 (Intel/AMD)                     | `mmd-cli-linux-x64`   |
+| `build-linux-arm64` | Linux    | ARM64 (Apple Silicon, AWS Graviton) | `mmd-cli-linux-arm64` |
+| `build-macos-x64`   | macOS    | x64 (Intel Mac)                     | `mmd-cli-macos-x64`   |
+| `build-macos-arm64` | macOS    | ARM64 (Apple Silicon)               | `mmd-cli-macos-arm64` |
 
 ```bash
 # Build for all platforms
@@ -144,27 +143,27 @@ mmd-cli -i diagram.mmd -o diagram.svg --iconPacks @iconify-json/logos
 
 ## CLI Flags
 
-| Flag | Short | Default | Description |
-|------|-------|---------|-------------|
-| `--input` | `-i` | (required) | Input mermaid file. Use `-` for stdin. |
-| `--output` | `-o` | `{input}.svg` | Output file. Use `-` for stdout. |
-| `--artefacts` | `-a` | output dir | Artefacts output path (markdown mode) |
-| `--theme` | `-t` | `default` | Theme: default, forest, dark, neutral |
-| `--width` | `-w` | `800` | Page width |
-| `--height` | `-H` | `600` | Page height |
-| `--backgroundColor` | `-b` | `white` | Background color |
-| `--outputFormat` | `-e` | auto | Output format: svg, png, pdf |
-| `--scale` | `-s` | `1` | Scale factor |
-| `--pdfFit` | `-f` | `false` | Scale PDF to fit chart |
-| `--svgFit` | | `false` | Set SVG dimensions to match diagram size |
-| `--svgId` | `-I` | | SVG element id attribute |
-| `--configFile` | `-c` | | Mermaid JSON config file |
-| `--cssFile` | `-C` | | CSS file for styling |
-| `--puppeteerConfigFile` | `-p` | | Browser JSON config file |
-| `--iconPacks` | | | Icon packs (e.g. @iconify-json/logos) |
-| `--iconPacksNamesAndUrls` | | | Icon packs as name#url |
-| `--quiet` | `-q` | `false` | Suppress log output |
-| `--version` | | | Show version |
+| Flag                      | Short | Default       | Description                              |
+|---------------------------|-------|---------------|------------------------------------------|
+| `--input`                 | `-i`  | (required)    | Input mermaid file. Use `-` for stdin.   |
+| `--output`                | `-o`  | `{input}.svg` | Output file. Use `-` for stdout.         |
+| `--artefacts`             | `-a`  | output dir    | Artefacts output path (markdown mode)    |
+| `--theme`                 | `-t`  | `default`     | Theme: default, forest, dark, neutral    |
+| `--width`                 | `-w`  | `800`         | Page width                               |
+| `--height`                | `-H`  | `600`         | Page height                              |
+| `--backgroundColor`       | `-b`  | `white`       | Background color                         |
+| `--outputFormat`          | `-e`  | auto          | Output format: svg, png, pdf             |
+| `--scale`                 | `-s`  | `1`           | Scale factor                             |
+| `--pdfFit`                | `-f`  | `false`       | Scale PDF to fit chart                   |
+| `--svgFit`                |       | `false`       | Set SVG dimensions to match diagram size |
+| `--svgId`                 | `-I`  |               | SVG element id attribute                 |
+| `--configFile`            | `-c`  |               | Mermaid JSON config file                 |
+| `--cssFile`               | `-C`  |               | CSS file for styling                     |
+| `--puppeteerConfigFile`   | `-p`  |               | Browser JSON config file                 |
+| `--iconPacks`             |       |               | Icon packs (e.g. @iconify-json/logos)    |
+| `--iconPacksNamesAndUrls` |       |               | Icon packs as name#url                   |
+| `--quiet`                 | `-q`  | `false`       | Suppress log output                      |
+| `--version`               |       |               | Show version                             |
 
 ## Configuration Files
 
@@ -188,12 +187,12 @@ JSON file with [mermaid.js configuration options](https://mermaid.js.org/config/
 
 JSON file with browser launch options. Passed via `--puppeteerConfigFile` / `-p`.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `executablePath` | string | Path to Chrome/Chromium binary |
-| `args` | string[] | Extra command-line flags for Chrome |
-| `timeout` | int | Browser launch timeout (ms) |
-| `headless` | string | Headless mode (`"new"` or `"old"`) |
+| Field            | Type     | Description                         |
+|------------------|----------|-------------------------------------|
+| `executablePath` | string   | Path to Chrome/Chromium binary      |
+| `args`           | string[] | Extra command-line flags for Chrome |
+| `timeout`        | int      | Browser launch timeout (ms)         |
+| `headless`       | string   | Headless mode (`"new"` or `"old"`)  |
 
 ```json
 {
