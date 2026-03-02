@@ -11,7 +11,10 @@ import (
 	"github.com/coolamit/mermaid-cli/internal/config"
 	"github.com/coolamit/mermaid-cli/internal/icons"
 	"github.com/coolamit/mermaid-cli/internal/markdown"
+	"github.com/coolamit/mermaid-cli/internal/pdfmeta"
+	"github.com/coolamit/mermaid-cli/internal/pngmeta"
 	"github.com/coolamit/mermaid-cli/internal/renderer"
+	"github.com/coolamit/mermaid-cli/internal/svgmeta"
 	"github.com/spf13/cobra"
 )
 
@@ -38,6 +41,8 @@ type Flags struct {
 	IconPacks             []string
 	IconPacksNamesAndUrls []string
 	Quiet                 bool
+	EmbedSource           bool
+	ExtractSource         bool
 }
 
 // NewRootCommand creates the cobra root command with all flags.
@@ -75,6 +80,8 @@ func NewRootCommand() *cobra.Command {
 	cmd.Flags().StringSliceVar(&flags.IconPacks, "iconPacks", nil, "Icon packs to use, e.g. @iconify-json/logos")
 	cmd.Flags().StringSliceVar(&flags.IconPacksNamesAndUrls, "iconPacksNamesAndUrls", nil, "Icon packs with name#url format")
 	cmd.Flags().BoolVarP(&flags.Quiet, "quiet", "q", false, "Suppress log output")
+	cmd.Flags().BoolVar(&flags.EmbedSource, "embed-source", false, "Embed mermaid source in output file")
+	cmd.Flags().BoolVar(&flags.ExtractSource, "extract-source", false, "Extract mermaid source from file and print to stdout")
 
 	return cmd
 }
@@ -93,6 +100,11 @@ func errorExit(format string, args ...interface{}) {
 }
 
 func run(flags *Flags) error {
+	// Handle extract-source mode
+	if flags.ExtractSource {
+		return runExtractSource(flags)
+	}
+
 	input := flags.Input
 	output := flags.Output
 	outputFormat := flags.OutputFormat
@@ -211,6 +223,7 @@ func run(flags *Flags) error {
 		PdfFit:          flags.PdfFit,
 		SvgFit:          flags.SvgFit,
 		IconPacks:       allIconPacks,
+		EmbedSource:     flags.EmbedSource,
 	}
 
 	// Read input
@@ -322,6 +335,40 @@ func run(flags *Flags) error {
 		}
 	}
 
+	return nil
+}
+
+// runExtractSource reads an input file and extracts embedded mermaid source.
+func runExtractSource(flags *Flags) error {
+	input := flags.Input
+	if input == "" || input == "-" {
+		return fmt.Errorf("--extract-source requires an input file (-i)")
+	}
+
+	data, err := os.ReadFile(input)
+	if err != nil {
+		return fmt.Errorf("failed to read input file: %w", err)
+	}
+
+	ext := strings.ToLower(filepath.Ext(input))
+	var source string
+
+	switch ext {
+	case ".png":
+		source, err = pngmeta.ExtractText(data, "mermaid-source")
+	case ".svg":
+		source, err = svgmeta.ExtractSource(data)
+	case ".pdf":
+		source, err = pdfmeta.ExtractSource(data)
+	default:
+		return fmt.Errorf("unsupported file format %q for source extraction (supported: .png, .svg, .pdf)", ext)
+	}
+
+	if err != nil {
+		return fmt.Errorf("failed to extract source: %w", err)
+	}
+
+	fmt.Print(source)
 	return nil
 }
 

@@ -22,6 +22,7 @@ type RenderOpts struct {
 	PdfFit          bool
 	SvgFit          bool
 	IconPacks       []icons.IconPack
+	EmbedSource     bool
 }
 
 // BuildPageHTML constructs the full HTML page with embedded mermaid.js, config, and diagram.

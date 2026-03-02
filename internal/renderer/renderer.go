@@ -11,6 +11,9 @@ import (
 	"github.com/chromedp/cdproto/emulation"
 	"github.com/chromedp/cdproto/page"
 	"github.com/chromedp/chromedp"
+	"github.com/coolamit/mermaid-cli/internal/pdfmeta"
+	"github.com/coolamit/mermaid-cli/internal/pngmeta"
+	"github.com/coolamit/mermaid-cli/internal/svgmeta"
 )
 
 // RenderResult contains the output of rendering a mermaid diagram.
@@ -130,6 +133,12 @@ func (r *Renderer) Render(ctx context.Context, definition string, outputFormat s
 		if err != nil {
 			return nil, err
 		}
+		if opts.EmbedSource {
+			data, err = svgmeta.EmbedSource(data, definition)
+			if err != nil {
+				return nil, fmt.Errorf("failed to embed source in SVG: %w", err)
+			}
+		}
 		result.Data = data
 
 	case "png":
@@ -137,12 +146,24 @@ func (r *Renderer) Render(ctx context.Context, definition string, outputFormat s
 		if err != nil {
 			return nil, err
 		}
+		if opts.EmbedSource {
+			data, err = pngmeta.EmbedText(data, "mermaid-source", definition)
+			if err != nil {
+				return nil, fmt.Errorf("failed to embed source in PNG: %w", err)
+			}
+		}
 		result.Data = data
 
 	case "pdf":
 		data, err := capturePDF(tabCtx, opts)
 		if err != nil {
 			return nil, err
+		}
+		if opts.EmbedSource {
+			data, err = pdfmeta.EmbedSource(data, definition)
+			if err != nil {
+				return nil, fmt.Errorf("failed to embed source in PDF: %w", err)
+			}
 		}
 		result.Data = data
 

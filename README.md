@@ -23,6 +23,7 @@ Converts Mermaid diagram definitions into SVG, PNG, and PDF files using a headle
   - [Mermaid Config (-c)](#mermaid-config--c)
   - [Browser Config (-p)](#browser-config--p)
   - [CSS File (-C)](#css-file--c)
+- [Source Embedding (Roundtrip Editing)](#source-embedding-roundtrip-editing)
 - [Docker](#docker-1)
   - [Start / Stop](#start--stop)
   - [Run Commands](#run-commands)
@@ -139,6 +140,12 @@ mmd-cli -i diagram.mmd -o diagram.png -b transparent
 
 # With icon packs
 mmd-cli -i diagram.mmd -o diagram.svg --iconPacks @iconify-json/logos
+
+# Embed mermaid source in output for later editing (.svg, .png, .pdf, .md)
+mmd-cli -i diagram.mmd -o diagram.svg --embed-source
+
+# Extract the original mermaid source from a previously embedded file (.svg, .png, .pdf)
+mmd-cli --extract-source -i diagram.svg
 ```
 
 ## CLI Flags
@@ -162,6 +169,8 @@ mmd-cli -i diagram.mmd -o diagram.svg --iconPacks @iconify-json/logos
 | `--puppeteerConfigFile`   | `-p`  |               | Browser JSON config file                 |
 | `--iconPacks`             |       |               | Icon packs (e.g. @iconify-json/logos)    |
 | `--iconPacksNamesAndUrls` |       |               | Icon packs as name#url                   |
+| `--embed-source`          |       | `false`       | Embed mermaid source in output file      |
+| `--extract-source`        |       | `false`       | Extract mermaid source from file to stdout|
 | `--quiet`                 | `-q`  | `false`       | Suppress log output                      |
 | `--version`               |       |               | Show version                             |
 
@@ -206,6 +215,40 @@ JSON file with browser launch options. Passed via `--puppeteerConfigFile` / `-p`
 ### CSS File (-C)
 
 Custom CSS file applied to the diagram page. Passed via `--cssFile` / `-C`. Useful for custom fonts or overriding default mermaid styles.
+
+## Source Embedding (Roundtrip Editing)
+
+**Note:** This feature is unique to `mmd-cli` and not available in the original `@mermaid-js/mermaid-cli`.
+
+The `--embed-source` flag stores the original mermaid definition inside the rendered output file. This lets you later extract the exact source to re-edit the diagram, even if the `.mmd` file is no longer available.
+
+When processing markdown files, `--embed-source` embeds the mermaid source in every rendered diagram image, even when the file contains multiple mermaid code blocks. Each output image gets its own block's source embedded.
+
+```bash
+# 1. Render and embed source
+mmd-cli -i diagram.mmd -o diagram.png --embed-source
+
+# 2. Later, extract the source
+mmd-cli --extract-source -i diagram.png
+# prints the original mermaid source to stdout
+
+# 3. Re-edit and re-render
+mmd-cli --extract-source -i diagram.png > diagram.mmd
+# ... edit diagram.mmd ...
+mmd-cli -i diagram.mmd -o diagram.png --embed-source
+
+# Markdown with multiple diagrams — each rendered image gets its source embedded
+mmd-cli -i document.md -o output.md --embed-source
+```
+
+Supported output formats:
+
+| Format   | Embedding method                          |
+|----------|-------------------------------------------|
+| PNG      | iTXt chunk with keyword `mermaid-source`  |
+| SVG      | Namespaced `<metadata>` element with CDATA|
+| PDF      | Base64-encoded comment                    |
+| Markdown | Source embedded in each rendered diagram  |
 
 ## Docker
 
