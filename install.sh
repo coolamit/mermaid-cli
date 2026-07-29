@@ -119,7 +119,7 @@ get_version() {
   info "Fetching latest release version..."
   VERSION=$(curl -sSL "https://api.github.com/repos/${REPO}/releases/latest" \
     | grep '"tag_name"' \
-    | sed -E 's/.*"tag_name":\s*"([^"]+)".*/\1/')
+    | sed -E 's/.*"tag_name":[[:space:]]*"([^"]+)".*/\1/')
 
   [ -n "$VERSION" ] || die "Could not determine latest version. Check https://github.com/${REPO}/releases"
 
