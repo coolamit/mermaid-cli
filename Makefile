@@ -6,7 +6,7 @@ VERSION?=$(shell cat version)
 LDFLAGS=-ldflags '-s -w -X github.com/coolamit/mermaid-cli/internal/cli.Version=$(VERSION)'
 
 # Declare phony targets
-.PHONY: ssh-cmd up down build clean test tidy format build-linux-x64 build-linux-arm64 build-macos-x64 build-macos-arm64 build-all docker-up docker-down docker-run docker-run-aloof docker-clean
+.PHONY: ssh-cmd up down build clean test test-install tidy format build-linux-x64 build-linux-arm64 build-macos-x64 build-macos-arm64 build-all docker-up docker-down docker-run docker-run-aloof docker-clean
 
 # Common function definitions
 define CURRENT_HOMESTEAD_STATUS
@@ -61,6 +61,10 @@ build:
 
 test:
 	@$(call SSH_EXEC,$(GO) clean -testcache && $(GO) test ./...)
+
+# Tests for install.sh (pure sh, runs on host — no VM needed)
+test-install:
+	@sh test/install_test.sh
 
 tidy:
 	@$(call SSH_EXEC,$(GO) mod tidy)

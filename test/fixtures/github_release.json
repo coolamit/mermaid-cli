@@ -1,0 +1,20 @@
+{
+  "url": "https://api.github.com/repos/coolamit/mermaid-cli/releases/200000001",
+  "html_url": "https://github.com/coolamit/mermaid-cli/releases/tag/v0.1.1",
+  "id": 200000001,
+  "tag_name": "v0.1.1",
+  "target_commitish": "master",
+  "name": "v0.1.1",
+  "draft": false,
+  "prerelease": false,
+  "created_at": "2026-02-11T00:00:00Z",
+  "published_at": "2026-02-11T00:30:00Z",
+  "assets": [
+    {
+      "name": "mmd-cli_0.1.1_macos_arm64.tar.gz",
+      "content_type": "application/gzip",
+      "browser_download_url": "https://github.com/coolamit/mermaid-cli/releases/download/v0.1.1/mmd-cli_0.1.1_macos_arm64.tar.gz"
+    }
+  ],
+  "body": "Release notes"
+}

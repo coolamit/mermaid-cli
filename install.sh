@@ -226,4 +226,7 @@ main() {
   info "Done!"
 }
 
-main "$@"
+# Skip execution when sourced for testing (see test/install_test.sh)
+if [ -z "${INSTALL_SH_TEST:-}" ]; then
+  main "$@"
+fi
