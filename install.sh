@@ -86,8 +86,8 @@ ensure_chrome() {
       ;;
     macos)
       if command -v brew >/dev/null 2>&1; then
-        info "Installing Chromium via Homebrew..."
-        brew install --cask chromium
+        info "Installing Google Chrome via Homebrew..."
+        brew install --cask google-chrome
       else
         echo ""
         echo "  Please install Chrome or Chromium manually:"
